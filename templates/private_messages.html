@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}1대1 메시지{% endblock %}
+{% block content %}
+<h2>{{ receiver.username }}님과의 메시지</h2>
+<ul>
+  {% for item in messages %}
+    <li>{{ item.sender_username }}: {{ item.message }}</li>
+  {% else %}
+    <li>아직 메시지가 없습니다.</li>
+  {% endfor %}
+</ul>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  메시지: <textarea name="message" rows="3" maxlength="500" required></textarea><br>
+  <button type="submit">보내기</button>
+</form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}1대1 메시지{% endblock %}
+{% block content %}
+<h2>1대1 메시지</h2>
+<ul>
+  {% for other_user in users %}
+    <li><a href="{{ url_for('private_messages', receiver_id=other_user.id) }}">{{ other_user.username }}</a></li>
+  {% else %}
+    <li>메시지를 보낼 사용자가 없습니다.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}관리자{% endblock %}
+{% block content %}
+<h2>관리자 페이지</h2>
+
+<h3>사용자 관리</h3>
+<ul>
+  {% for item in users %}
+    <li>
+      {{ item.username }} / 잔액 {{ item.balance }}원
+      {% if item.is_admin %} / 관리자{% endif %}
+      {% if item.is_suspended %} / 휴면{% endif %}
+      {% if not item.is_admin %}
+        <form class="inline-form" method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="target_id" value="{{ item.id }}">
+          <input type="hidden" name="action" value="suspend_user">
+          <button type="submit">휴면 처리</button>
+        </form>
+      {% endif %}
+      <form class="inline-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="target_id" value="{{ item.id }}">
+        <input type="hidden" name="action" value="activate_user">
+        <button type="submit">휴면 해제</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+
+<h3>상품 관리</h3>
+<ul>
+  {% for item in products %}
+    <li>
+      {{ item.title }} / 판매자 {{ item.seller_username }}
+      {% if item.is_blocked %} / 차단됨{% endif %}
+      <form class="inline-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="target_id" value="{{ item.id }}">
+        <input type="hidden" name="action" value="block_product">
+        <button type="submit">차단</button>
+      </form>
+      <form class="inline-form" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="target_id" value="{{ item.id }}">
+        <input type="hidden" name="action" value="unblock_product">
+        <button type="submit">차단 해제</button>
+      </form>
+    </li>
+  {% endfor %}
+</ul>
+
+<h3>신고 내역</h3>
+<ul>
+  {% for item in reports %}
+    <li>신고자 {{ item.reporter_username }} / 대상 {{ item.target_id }} / 사유 {{ item.reason }}</li>
+  {% else %}
+    <li>신고 내역이 없습니다.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

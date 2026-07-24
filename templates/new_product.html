@@ -3,10 +3,12 @@
 {% block content %}
 <h2>상품 등록</h2>
 <form method="post">
-  제목: <input type="text" name="title" required><br>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  제목: <input type="text" name="title" maxlength="80" required><br>
   설명: <br>
-  <textarea name="description" rows="4" cols="50" required></textarea><br>
-  가격: <input type="text" name="price" required><br>
+  <textarea name="description" rows="4" cols="50" maxlength="1000" required></textarea><br>
+  가격: <input type="number" name="price" min="0" max="100000000" required><br>
+  사진 URL: <input type="url" name="image_url" maxlength="300" placeholder="https://example.com/item.jpg"><br>
   <button type="submit">등록하기</button>
 </form>
 {% endblock %}
